@@ -29,7 +29,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Brand */}
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-base sm:text-lg font-semibold text-gray-900">Blog</span>
+            <span className="text-base sm:text-lg font-semibold text-gray-900">Writable</span>
           </Link>
 
           {/* Desktop Actions */}

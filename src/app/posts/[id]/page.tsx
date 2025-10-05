@@ -49,6 +49,9 @@ export default function ViewPostPage() {
           text: post.excerpt,
           url: window.location.href,
         });
+
+        navigator.clipboard.writeText(window.location.href);
+        
       } catch {
         navigator.clipboard.writeText(window.location.href);
       }

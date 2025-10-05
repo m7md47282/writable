@@ -10,11 +10,15 @@ interface PostViewProps {
 }
 
 export default function PostView({ post }: PostViewProps) {
-  const formatDate = (date: Date | string | undefined) => {
+  const formatDate = (date: Date | string | { _seconds: number } | undefined) => {
+    console.log('date', date);
     if (!date) return '';
     
     let dateObj: Date;
-    if (typeof date === 'string') {
+    
+    if (date && typeof date === 'object' && '_seconds' in date) {
+      dateObj = new Date(date._seconds * 1000);
+    } else if (typeof date === 'string') {
       dateObj = new Date(date);
     } else if (date instanceof Date) {
       dateObj = date;
@@ -25,19 +29,24 @@ export default function PostView({ post }: PostViewProps) {
     if (isNaN(dateObj.getTime())) {
       return '';
     }
-    
-    return dateObj.toLocaleDateString('en-US', {
+
+    const formattedDate = dateObj.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
+
+    return formattedDate;
   };
 
-  const formatDateTime = (date: Date | string | undefined) => {
+  const formatDateTime = (date: Date | string | { _seconds: number } | undefined) => {
     if (!date) return '';
     
     let dateObj: Date;
-    if (typeof date === 'string') {
+    
+    if (date && typeof date === 'object' && '_seconds' in date) {
+      dateObj = new Date(date._seconds * 1000);
+    } else if (typeof date === 'string') {
       dateObj = new Date(date);
     } else if (date instanceof Date) {
       dateObj = date;
