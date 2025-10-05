@@ -1,7 +1,8 @@
-import { auth } from '@/lib/firebase';
+import { getFirebase } from '@/lib/firebase';
 
 const getCurrentUserToken = async (): Promise<string | null> => {
   try {
+    const { auth } = getFirebase();
     const currentUser = auth.currentUser;
     if (!currentUser) {
       return null;

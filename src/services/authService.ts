@@ -3,7 +3,7 @@ import {
   signOut,
   User
 } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { getFirebase } from '@/lib/firebase';
 import { LoginCredentials, ApiResponse, SignupCredentials } from '@/models';
 import { Post } from './httpsService';
 
@@ -24,7 +24,7 @@ export class AuthService {
     try {
 
       const response = await Post({ url: '/api/auth/login', body: credentials, skipToken: true }) as ApiResponse;
-
+      const { auth } = getFirebase();
       const userCredential = await signInWithCustomToken(auth, (response.data as { customToken : string })?.customToken );
       return userCredential.user;
     } catch (error) {
@@ -36,6 +36,7 @@ export class AuthService {
   async signup(credentials: SignupCredentials): Promise<User> {
     try {
       const response = await Post({ url: '/api/auth/signup', body: credentials, skipToken: true }) as ApiResponse;
+      const { auth } = getFirebase();
       const userCredential = await signInWithCustomToken(auth, (response.data as { customToken : string })?.customToken );
       return userCredential.user;
     } catch (error) {
@@ -44,6 +45,7 @@ export class AuthService {
   }
 
   async logout(): Promise<void> {
+    const { auth } = getFirebase();
     const currentUser = auth.currentUser;
     if (!currentUser) {
       throw new Error('No user is currently signed in');
@@ -68,6 +70,7 @@ export class AuthService {
   }
 
   getCurrentUser(): User | null {
+    const { auth } = getFirebase();
     return auth.currentUser;
   }
 }
