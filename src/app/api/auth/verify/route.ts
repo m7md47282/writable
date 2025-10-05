@@ -1,0 +1,8 @@
+import { NextRequest } from 'next/server';
+import { AuthController } from '@/server/controllers/authController';
+
+export async function POST(request: NextRequest) {
+  const authController = new AuthController();
+ 
+  return authController.verifyToken(request);
+}
