@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "placeholder-will-be-overridden-by-workflow"
-  }
+    "writable": "writable-d2ffd"
+  },
+  "targets": {},
+  "etags": {}
 }
-
-
