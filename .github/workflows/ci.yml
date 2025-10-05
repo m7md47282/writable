@@ -29,6 +29,15 @@ jobs:
       - name: Typecheck
         run: npx tsc -noEmit
 
+      - name: Verify envs
+        run: |
+          [ -n "$NEXT_PUBLIC_FIREBASE_API_KEY" ] || (echo "Missing NEXT_PUBLIC_FIREBASE_API_KEY" && exit 1)
+          [ -n "$NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN" ] || (echo "Missing NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN" && exit 1)
+          [ -n "$NEXT_PUBLIC_FIREBASE_PROJECT_ID" ] || (echo "Missing NEXT_PUBLIC_FIREBASE_PROJECT_ID" && exit 1)
+          [ -n "$NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET" ] || (echo "Missing NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET" && exit 1)
+          [ -n "$NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID" ] || (echo "Missing NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID" && exit 1)
+          [ -n "$NEXT_PUBLIC_FIREBASE_APP_ID" ] || (echo "Missing NEXT_PUBLIC_FIREBASE_APP_ID" && exit 1)
+
       - name: Build
         env:
           NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
