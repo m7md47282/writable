@@ -26,6 +26,8 @@ export default function ViewPostPage() {
         
         try {
           await postService.incrementViewCount(postId);
+        } catch (viewError) {
+          console.warn('Failed to increment view count:', viewError);
         }
       } catch (error) {
         setError(error instanceof Error ? error.message : 'Failed to load post');
