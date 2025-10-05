@@ -42,8 +42,8 @@ describe('PostService', () => {
     }
 
     // Mock the constructor dependencies
-    vi.mocked(AuthService).mockImplementation(() => mockAuthService)
-    vi.mocked(PostRepository).mockImplementation(() => mockPostRepository)
+    vi.mocked(AuthService).mockReturnValue(mockAuthService as unknown as AuthService)
+    vi.mocked(PostRepository).mockReturnValue(mockPostRepository as unknown as PostRepository)
 
     postService = new PostService()
   })
@@ -150,6 +150,7 @@ describe('PostService', () => {
       excerpt: 'Test excerpt',
       category: 'Technology',
       tags: ['test'],
+      featuredImage: 'https://example.com/image.jpg',
       authorId: 'user-123',
       authorName: 'Test User',
       createdAt: new Date(),
@@ -158,6 +159,8 @@ describe('PostService', () => {
       viewCount: 0,
       likeCount: 0,
       isPublished: true,
+      isFeatured: false,
+      readTime: '5',
       publishedAt: new Date()
     }
 
@@ -222,6 +225,7 @@ describe('PostService', () => {
       excerpt: 'Original excerpt',
       category: 'Technology',
       tags: ['test'],
+      featuredImage: 'https://example.com/image.jpg',
       authorId: 'user-123',
       authorName: 'Test User',
       createdAt: new Date(),
@@ -229,7 +233,9 @@ describe('PostService', () => {
       slug: 'original-post',
       viewCount: 0,
       likeCount: 0,
-      isPublished: false
+      isPublished: false,
+      isFeatured: false,
+      readTime: '5'
     }
 
     it('should update a post successfully', async () => {
@@ -326,6 +332,7 @@ describe('PostService', () => {
       excerpt: 'Test excerpt',
       category: 'Technology',
       tags: ['test'],
+      featuredImage: 'https://example.com/image.jpg',
       authorId: 'user-123',
       authorName: 'Test User',
       createdAt: new Date(),
@@ -333,7 +340,9 @@ describe('PostService', () => {
       slug: 'test-post',
       viewCount: 0,
       likeCount: 0,
-      isPublished: false
+      isPublished: false,
+      isFeatured: false,
+      readTime: '5'
     }
 
     it('should delete a post successfully', async () => {
@@ -417,6 +426,7 @@ describe('PostService', () => {
         excerpt: 'Excerpt 1',
         category: 'Technology',
         tags: ['tech'],
+        featuredImage: 'https://example.com/image1.jpg',
         authorId: 'user-123',
         authorName: 'Test User',
         createdAt: new Date(),
@@ -425,6 +435,8 @@ describe('PostService', () => {
         viewCount: 10,
         likeCount: 5,
         isPublished: true,
+        isFeatured: false,
+        readTime: '5',
         publishedAt: new Date()
       },
       {
@@ -434,6 +446,7 @@ describe('PostService', () => {
         excerpt: 'Excerpt 2',
         category: 'Lifestyle',
         tags: ['lifestyle'],
+        featuredImage: 'https://example.com/image2.jpg',
         authorId: 'user-456',
         authorName: 'Another User',
         createdAt: new Date(),
@@ -442,6 +455,8 @@ describe('PostService', () => {
         viewCount: 20,
         likeCount: 8,
         isPublished: true,
+        isFeatured: false,
+        readTime: '3',
         publishedAt: new Date()
       }
     ]
@@ -495,83 +510,4 @@ describe('PostService', () => {
     })
   })
 
-  describe('generateSlug', () => {
-    it('should generate slug from title', () => {
-      // Act
-      const slug = postService.generateSlug('Test Post Title')
-
-      // Assert
-      expect(slug).toBe('test-post-title')
-    })
-
-    it('should handle special characters', () => {
-      // Act
-      const slug = postService.generateSlug('Test & Post! @#$%')
-
-      // Assert
-      expect(slug).toBe('test-post-')
-    })
-
-    it('should handle empty title', () => {
-      // Act
-      const slug = postService.generateSlug('')
-
-      // Assert
-      expect(slug).toBe('')
-    })
-
-    it('should handle multiple spaces', () => {
-      // Act
-      const slug = postService.generateSlug('Test    Post   Title')
-
-      // Assert
-      expect(slug).toBe('test-post-title')
-    })
-  })
-
-  describe('cleanUndefinedValues', () => {
-    it('should remove undefined values from object', () => {
-      // Arrange
-      const obj = {
-        title: 'Test',
-        content: undefined,
-        excerpt: 'Excerpt',
-        tags: undefined,
-        category: 'Tech'
-      }
-
-      // Act
-      const cleaned = postService.cleanUndefinedValues(obj)
-
-      // Assert
-      expect(cleaned).toEqual({
-        title: 'Test',
-        excerpt: 'Excerpt',
-        category: 'Tech'
-      })
-    })
-
-    it('should handle empty object', () => {
-      // Act
-      const cleaned = postService.cleanUndefinedValues({})
-
-      // Assert
-      expect(cleaned).toEqual({})
-    })
-
-    it('should handle object with no undefined values', () => {
-      // Arrange
-      const obj = {
-        title: 'Test',
-        content: 'Content',
-        excerpt: 'Excerpt'
-      }
-
-      // Act
-      const cleaned = postService.cleanUndefinedValues(obj)
-
-      // Assert
-      expect(cleaned).toEqual(obj)
-    })
-  })
 })

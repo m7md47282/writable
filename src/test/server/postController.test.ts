@@ -36,7 +36,7 @@ describe('PostController', () => {
     }
 
     // Mock the constructor
-    vi.mocked(PostService).mockImplementation(() => mockPostService)
+    vi.mocked(PostService).mockReturnValue(mockPostService as unknown as PostService)
 
     postController = new PostController()
   })
@@ -265,7 +265,6 @@ describe('PostController', () => {
       const mockResponse = {
         success: true,
         data: {
-          id: 'post-123',
           ...mockUpdateData,
           authorId: 'user-123',
           authorName: 'Test User',

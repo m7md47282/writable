@@ -39,6 +39,7 @@ describe('PostRepository', () => {
     }
 
     // Mock the base repository constructor
+    // @ts-ignore
     vi.mocked(BaseFirebaseRepository).mockImplementation(() => mockBaseRepository)
 
     postRepository = new PostRepository()
@@ -98,6 +99,7 @@ describe('PostRepository', () => {
       excerpt: 'Test excerpt',
       category: 'Technology',
       tags: ['test'],
+      featuredImage: 'https://example.com/image.jpg',
       authorId: 'user-123',
       authorName: 'Test User',
       createdAt: new Date(),
@@ -106,6 +108,8 @@ describe('PostRepository', () => {
       viewCount: 0,
       likeCount: 0,
       isPublished: true,
+      isFeatured: false,
+      readTime: '5',
       publishedAt: new Date()
     }
 
@@ -155,6 +159,7 @@ describe('PostRepository', () => {
       excerpt: 'Test excerpt',
       category: 'Technology',
       tags: ['test'],
+      featuredImage: 'https://example.com/image.jpg',
       authorId: 'user-123',
       authorName: 'Test User',
       createdAt: new Date(),
@@ -162,7 +167,9 @@ describe('PostRepository', () => {
       slug: 'updated-post',
       viewCount: 0,
       likeCount: 0,
-      isPublished: false
+      isPublished: false,
+      isFeatured: false,
+      readTime: '5'
     }
 
     it('should update a post successfully', async () => {
@@ -217,6 +224,7 @@ describe('PostRepository', () => {
         excerpt: 'Excerpt 1',
         category: 'Technology',
         tags: ['tech'],
+        featuredImage: 'https://example.com/image1.jpg',
         authorId: 'user-123',
         authorName: 'Test User',
         createdAt: new Date(),
@@ -225,6 +233,8 @@ describe('PostRepository', () => {
         viewCount: 10,
         likeCount: 5,
         isPublished: true,
+        isFeatured: false,
+        readTime: '5',
         publishedAt: new Date()
       },
       {
@@ -234,6 +244,7 @@ describe('PostRepository', () => {
         excerpt: 'Excerpt 2',
         category: 'Lifestyle',
         tags: ['lifestyle'],
+        featuredImage: 'https://example.com/image2.jpg',
         authorId: 'user-456',
         authorName: 'Another User',
         createdAt: new Date(),
@@ -242,6 +253,8 @@ describe('PostRepository', () => {
         viewCount: 20,
         likeCount: 8,
         isPublished: true,
+        isFeatured: false,
+        readTime: '5',
         publishedAt: new Date()
       }
     ]
@@ -293,6 +306,7 @@ describe('PostRepository', () => {
       excerpt: 'Test excerpt',
       category: 'Technology',
       tags: ['test'],
+      featuredImage: 'https://example.com/image.jpg',
       authorId: 'user-123',
       authorName: 'Test User',
       createdAt: new Date(),
@@ -301,6 +315,8 @@ describe('PostRepository', () => {
       viewCount: 0,
       likeCount: 0,
       isPublished: true,
+      isFeatured: false,
+      readTime: '5',
       publishedAt: new Date()
     }
 

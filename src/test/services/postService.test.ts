@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { PostService } from '@/services/postService'
-import { Post, Get, Put, Delete } from '@/services/httpsService'
-import { CreatePostData, UpdatePostData, PostResponse, PostsResponse } from '@/models'
+import { Post as PostHttp, Get, Put, Delete } from '@/services/httpsService'
+import { CreatePostData, UpdatePostData, PostResponse, PostsResponse, Post } from '@/models'
 
 // Mock the httpsService
 vi.mock('@/services/httpsService', () => ({
@@ -50,14 +50,14 @@ describe('PostService (Client)', () => {
         success: true,
         data: mockCreatedPost
       }
-      vi.mocked(Post).mockResolvedValue(mockResponse)
+      vi.mocked(PostHttp).mockResolvedValue(mockResponse)
 
       // Act
       const result = await postService.createPost(mockPostData)
 
       // Assert
       expect(result).toEqual(mockCreatedPost)
-      expect(Post).toHaveBeenCalledWith({
+      expect(PostHttp).toHaveBeenCalledWith({
         url: '/api/posts',
         body: mockPostData
       })
@@ -69,7 +69,7 @@ describe('PostService (Client)', () => {
         success: false,
         error: { message: 'Failed to create post' }
       }
-      vi.mocked(Post).mockResolvedValue(mockResponse)
+      vi.mocked(PostHttp).mockResolvedValue(mockResponse)
 
       // Act & Assert
       await expect(postService.createPost(mockPostData)).rejects.toThrow('Failed to create post')
@@ -79,9 +79,9 @@ describe('PostService (Client)', () => {
       // Arrange
       const mockResponse: PostResponse = {
         success: true,
-        data: undefined as Post
+        data: undefined as unknown as Post
       }
-      vi.mocked(Post).mockResolvedValue(mockResponse)
+      vi.mocked(PostHttp).mockResolvedValue(mockResponse)
 
       // Act & Assert
       await expect(postService.createPost(mockPostData)).rejects.toThrow('Failed to create post')
@@ -89,7 +89,7 @@ describe('PostService (Client)', () => {
 
     it('should handle network errors', async () => {
       // Arrange
-      vi.mocked(Post).mockRejectedValue(new Error('Network error'))
+      vi.mocked(PostHttp).mockRejectedValue(new Error('Network error'))
 
       // Act & Assert
       await expect(postService.createPost(mockPostData)).rejects.toThrow('Network error')
@@ -104,6 +104,7 @@ describe('PostService (Client)', () => {
       excerpt: 'Test excerpt',
       category: 'Technology',
       tags: ['test'],
+      featuredImage: 'https://example.com/image.jpg',
       authorId: 'user-123',
       authorName: 'Test User',
       createdAt: new Date(),
@@ -112,6 +113,8 @@ describe('PostService (Client)', () => {
       viewCount: 0,
       likeCount: 0,
       isPublished: true,
+      isFeatured: false,
+      readTime: '5',
       publishedAt: new Date()
     }
 
@@ -189,6 +192,7 @@ describe('PostService (Client)', () => {
       excerpt: 'Updated excerpt',
       category: 'Technology',
       tags: ['test'],
+      featuredImage: 'https://example.com/image.jpg',
       authorId: 'user-123',
       authorName: 'Test User',
       createdAt: new Date(),
@@ -196,7 +200,9 @@ describe('PostService (Client)', () => {
       slug: 'updated-post',
       viewCount: 0,
       likeCount: 0,
-      isPublished: false
+      isPublished: false,
+      isFeatured: false,
+      readTime: '5'
     }
 
     it('should update a post successfully', async () => {
@@ -292,6 +298,7 @@ describe('PostService (Client)', () => {
         excerpt: 'Excerpt 1',
         category: 'Technology',
         tags: ['tech'],
+        featuredImage: 'https://example.com/image1.jpg',
         authorId: 'user-123',
         authorName: 'Test User',
         createdAt: new Date(),
@@ -300,6 +307,8 @@ describe('PostService (Client)', () => {
         viewCount: 10,
         likeCount: 5,
         isPublished: true,
+        isFeatured: false,
+        readTime: '5',
         publishedAt: new Date()
       },
       {
@@ -309,6 +318,7 @@ describe('PostService (Client)', () => {
         excerpt: 'Excerpt 2',
         category: 'Lifestyle',
         tags: ['lifestyle'],
+        featuredImage: 'https://example.com/image2.jpg',
         authorId: 'user-456',
         authorName: 'Another User',
         createdAt: new Date(),
@@ -317,6 +327,8 @@ describe('PostService (Client)', () => {
         viewCount: 20,
         likeCount: 8,
         isPublished: true,
+        isFeatured: false,
+        readTime: '5',
         publishedAt: new Date()
       }
     ]
