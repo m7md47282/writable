@@ -19,14 +19,10 @@ vi.mock('next/navigation', () => ({
 
 // Mock Next.js image component
 vi.mock('next/image', () => ({
-  default: ({ src, alt, ...props }: any) => {
+  default: ({ src, alt, ...props }: { src: string; alt: string; [key: string]: unknown }) => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const React = require('react')
     return React.createElement('img', { src, alt, ...props })
   },
 }))
 
-// Global test setup
-beforeEach(() => {
-  // Clear all mocks before each test
-  vi.clearAllMocks()
-})

@@ -10,8 +10,18 @@ vi.mock('@/server/repositories/postRepository')
 
 describe('PostService', () => {
   let postService: PostService
-  let mockAuthService: any
-  let mockPostRepository: any
+  let mockAuthService: {
+    verifyToken: ReturnType<typeof vi.fn>
+  }
+  let mockPostRepository: {
+    create: ReturnType<typeof vi.fn>
+    getById: ReturnType<typeof vi.fn>
+    update: ReturnType<typeof vi.fn>
+    delete: ReturnType<typeof vi.fn>
+    findMany: ReturnType<typeof vi.fn>
+    count: ReturnType<typeof vi.fn>
+    incrementViewCount: ReturnType<typeof vi.fn>
+  }
 
   beforeEach(() => {
     vi.clearAllMocks()

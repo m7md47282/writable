@@ -79,7 +79,7 @@ describe('PostService (Client)', () => {
       // Arrange
       const mockResponse: PostResponse = {
         success: true,
-        data: undefined as any
+        data: undefined as Post
       }
       vi.mocked(Post).mockResolvedValue(mockResponse)
 

@@ -9,7 +9,16 @@ vi.mock('@/server/services/postService')
 
 describe('PostController', () => {
   let postController: PostController
-  let mockPostService: any
+  let mockPostService: {
+    createPost: ReturnType<typeof vi.fn>
+    getPostById: ReturnType<typeof vi.fn>
+    updatePost: ReturnType<typeof vi.fn>
+    deletePost: ReturnType<typeof vi.fn>
+    getPosts: ReturnType<typeof vi.fn>
+    publishPost: ReturnType<typeof vi.fn>
+    unpublishPost: ReturnType<typeof vi.fn>
+    incrementViewCount: ReturnType<typeof vi.fn>
+  }
 
   beforeEach(() => {
     vi.clearAllMocks()

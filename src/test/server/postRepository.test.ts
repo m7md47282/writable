@@ -8,7 +8,18 @@ vi.mock('@/server/repositories/baseFirebaseRepository')
 
 describe('PostRepository', () => {
   let postRepository: PostRepository
-  let mockBaseRepository: any
+  let mockBaseRepository: {
+    create: ReturnType<typeof vi.fn>
+    getById: ReturnType<typeof vi.fn>
+    update: ReturnType<typeof vi.fn>
+    delete: ReturnType<typeof vi.fn>
+    findMany: ReturnType<typeof vi.fn>
+    findBySlug: ReturnType<typeof vi.fn>
+    count: ReturnType<typeof vi.fn>
+    incrementViewCount: ReturnType<typeof vi.fn>
+    incrementLikeCount: ReturnType<typeof vi.fn>
+    decrementLikeCount: ReturnType<typeof vi.fn>
+  }
 
   beforeEach(() => {
     vi.clearAllMocks()
